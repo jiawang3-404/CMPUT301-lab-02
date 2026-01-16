@@ -1,8 +1,12 @@
 package com.example.listycity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +21,12 @@ public class MainActivity extends AppCompatActivity {
     ListView cityList;
     ArrayAdapter<String> cityAdapter;
     ArrayList<String> dataList;
+
+    Button addButton, deleteButton, confirmButton;
+
+    EditText userInput;
+
+    boolean adding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,5 +48,52 @@ public class MainActivity extends AppCompatActivity {
 
         cityAdapter = new ArrayAdapter<>(this, R.layout.content, dataList);
         cityList.setAdapter(cityAdapter);
+
+        addButton = findViewById(R.id.addButton);
+        deleteButton = findViewById(R.id.deleteButton);
+        confirmButton = findViewById(R.id.confirm);
+        userInput = findViewById((R.id.inputText));
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userInput.setVisibility(View.VISIBLE);
+                confirmButton.setVisibility(View.VISIBLE);
+                addButton.setVisibility(View.INVISIBLE);
+                deleteButton.setVisibility(View.INVISIBLE);
+                adding = true;
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userInput.setVisibility(View.VISIBLE);
+                confirmButton.setVisibility(View.VISIBLE);
+                addButton.setVisibility(View.INVISIBLE);
+                deleteButton.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(adding){
+                    cityAdapter.add(userInput.getText().toString());
+                }
+                else{
+                    cityAdapter.remove(userInput.getText().toString());
+                }
+                userInput.setText("");
+                userInput.setVisibility(View.INVISIBLE);
+                confirmButton.setVisibility(View.INVISIBLE);
+                adding = false;
+                addButton.setVisibility(View.VISIBLE);
+                deleteButton.setVisibility(View.VISIBLE);
+            }
+        });
+
     }
+
 }
